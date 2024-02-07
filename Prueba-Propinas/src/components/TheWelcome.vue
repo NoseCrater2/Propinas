@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch} from 'vue';
+import { ref, computed, watch} from 'vue';
 import type { Method } from '../models/method.ts';
 import type { Payment } from '../models/payment.ts';
 import MethodsApi from '../api/resources/Methods';
@@ -39,7 +39,7 @@ function assignTotal(): void {
   if(selectedPaymentType.value || payments.value.length > 0){
     const payment: Payment = {
       type: selectedPaymentType.value?.name || '',
-        amount: parseInt(totalInCalculator.value)
+      amount: parseInt(totalInCalculator.value)
     }
     savePayment(payment);
     totalInCalculator.value = '';
@@ -144,13 +144,17 @@ const buttons = [
 const paymentMethods = ref<Method[]>([]) 
 const payments = ref<Payment[]>([]);
 
+const lists =   Promise.all([
+    MethodsApi.index(),
+    PaymentsApi.index()
+  ]);
+lists.then(results => {
+  paymentMethods.value = results[0];
+  payments.value = results[1];
+  
+})
 
- onMounted(async() =>  {
-  paymentMethods.value = await MethodsApi.index();
-  payments.value = await PaymentsApi.index();
-});
-
-watch(totalPayed, async (newtotalPayed, oldtotalPayed) => {
+watch(totalPayed, (newtotalPayed, oldtotalPayed) => {
   if (newtotalPayed >= total.value) {
     isActiveCalculator.value = false;
   }

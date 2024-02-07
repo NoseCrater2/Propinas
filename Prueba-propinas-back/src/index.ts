@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import methodRoutes from './routes/methods';
 import paymentRoutes from './routes/payments';
 import cors from 'cors'
@@ -15,6 +15,10 @@ app.use('/api/payments', paymentRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Propinas back');
+});
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).send('Something went wrong');
 });
 
 app.listen(port, () => {

@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { Method } from '../models/method';
 
 const router = Router();
-let methods: Method[] = [
+const methods: Method[] = [
   {
     id: 1,
     name: 'Efectivo',
