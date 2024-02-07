@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { Payment } from '../models/payment';
 
 const router = Router();
-let payments: Payment[] = [];
+const payments: Payment[] = [];
 
 router.get('/', (req: Request, res: Response) => {
   res.json(payments);
@@ -10,7 +10,7 @@ router.get('/', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
   const payment: Payment = {
-    id: payments.length + 1,
+    id: Date.now(),
     amount: req.body.amount,
     type: req.body.type,
   };
